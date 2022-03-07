@@ -55,7 +55,6 @@ s16 Rand_S16Offset(s16 base, s16 range) {
     return (s16)(Rand_ZeroOne() * range) + base;
 }
 
-
 int main(int argc, char** argv) {
     int steps_forward;
 
@@ -71,14 +70,14 @@ int main(int argc, char** argv) {
     }
         
     if (sscanf(argv[1], "%8X", &sRandInt) == 0) {
-        fprintf(stderr, "error: entered characters in first argument are not a hex number\n");
+        fprintf(stderr, "error: entered characters in first argument are not a hexadecimal number\n");
         return 1;
     }
 
     if (argc == 2) {
         steps_forward = 1;
-    } else if (sscanf(argv[1], "%d", &steps_forward) == 0) {
-        fprintf(stderr, "error: entered characters in second argument are not a hex number\n");
+    } else if (sscanf(argv[2], "%d", &steps_forward) == 0) {
+        fprintf(stderr, "error: entered characters in second argument are not a decimal number\n");
         return 1;
     } else if (argc > 3) {
         fprintf(stderr, "error: too many arguments passed\n");

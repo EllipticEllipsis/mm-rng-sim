@@ -54,10 +54,13 @@ f32 Rand_ZeroOne(void) {
     return *((f32*)&sRandFloat) - 1.0f;
 }
 
+// Both operations involved in the new seed calculation are invertible modulo 1 << 32, this function is the inverse
+void Rand_Reverse(void) {
+    sRandInt = (sRandInt * 4276115653) + 634785765;
+}
 
 int main(int argc, char** argv) {
     int steps_back;
-    uint32_t seed;
 
     if (argc < 2) {
         printf("USAGE: %s SEED [STEPS_BACK]\n", argv[0]);
@@ -71,37 +74,28 @@ int main(int argc, char** argv) {
     }
 
 
-    if ((argc > 2) || (sscanf(argv[1], "%X", &seed) == 0)) {
-        fprintf(stderr, "error: entered characters are not a single number\n");
+    if (sscanf(argv[1], "%X", &sRandInt) == 0) {
+        fprintf(stderr, "error: entered characters in first argument are not a hexadecimal number\n");
         return 1;
     }
 
     if (argc == 2) {
         steps_back = 1;
-    } else if (sscanf(argv[1], "%d", &steps_back) == 0) {
-        fprintf(stderr, "error: entered characters in second argument are not a hex number\n");
+    } else if (sscanf(argv[2], "%d", &steps_back) == 0) {
+        fprintf(stderr, "error: entered characters in second argument are not a decimal number\n");
         return 1;
     } else if (argc > 3) {
         fprintf(stderr, "error: too many arguments passed\n");
         return 1;
     }
+    
+    printf("Starting RNG: %08X\n", sRandInt);
+    printf("Reversing RNG by: %d\n", steps_back);
 
-    printf("Will find seeds %d steps prior to %8X.\n", steps_back, seed);
+    for (int i = 0; i < steps_back; i++) {
+        Rand_Reverse();
 
-    uint64_t i = 0;
-    for (i = 0; i <= UINT32_MAX; i++) {
-        if ((i % (UINT32_MAX / 0x10 + 1)) == 0) {
-            fprintf(stderr, "%08lX\n", i);
-        }
-
-        sRandInt = i;
-        for (int j = 0; j < steps_back; j++) {
-            Rand_ZeroOne();
-        }
-
-        if (sRandInt == seed) {
-            printf("matching seed: %08lX\n", i);
-        }
+        printf("%2d steps before: %08X\n", i + 1, sRandInt);
     }
 
     return 0;

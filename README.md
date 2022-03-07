@@ -4,7 +4,7 @@
 
 Given a seed (8-digit hex number), calculate the lottery numbers, Bombers' code, and Oceanside Spider House mask order.
 
-Available in both C and Python, both should give identical outputs. If not, the C program uses almost exactly the code from actual MM decomp, so should be taken as accurate over the Python
+Available in both C and Python, both should give identical outputs. If not, the C program uses almost exactly the code from actual MM decomp, so should be taken as accurate over the Python.
 
 ## find-rng-seed
 
@@ -12,7 +12,7 @@ Brute-forces possible RNG values from the lottery numbers, which are by far the 
 
 ## step-back-rng
 
-Brute-forces the RNG value a set number of calls into the past. Will be very slow for larger numbers!
+Print the previous n RNG values. This can be calculated using the inverse of the linear congruential generator.
 
 ## advance-rng
 
