@@ -1,4 +1,5 @@
-CFLAGS := -Wall -Wextra -pedantic -std=c99 -Os
+CFLAGS := -Wall -Wextra -pedantic -std=c99 -Os -g
+LIB := -lm
 PROGRAMS := mm-rng-sim.elf find-rng-seed.elf advance-rng.elf step-back-rng.elf
 
 ifeq ($(shell command -v clang >/dev/null 2>&1; echo $$?),0)
@@ -13,4 +14,4 @@ clean:
 	$(RM) $(PROGRAMS)
 
 %.elf: %.c
-	$(CC) $(CFLAGS) $< -o $@ -lm
+	$(CC) $(CFLAGS) $(LIB) $< -o $@
